@@ -11,7 +11,6 @@ public class StudentServant extends UnicastRemoteObject implements User {
  		theName = name;
     }
     
-    
 	public int getName() throws RemoteException {
 	    return theName;
 	}

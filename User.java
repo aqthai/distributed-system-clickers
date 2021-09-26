@@ -13,4 +13,8 @@ public class User implements Serializable {
       username = aUsername;
       password = aPassword;
     }
+
+    public void print(){
+      System.out.print(type + " a.k.a " + username);
+	  }
 }
