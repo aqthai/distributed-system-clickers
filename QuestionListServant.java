@@ -9,13 +9,13 @@ public class QuestionListServant extends UnicastRemoteObject implements Question
         theList = new Vector<Question>();
     }
 
-  	public Question newMCQuestion(Question q) throws RemoteException{
+  	public MultipleChoice newMCQuestion(Question q) throws RemoteException{
        	MultipleChoiceServant s = new MultipleChoiceServant( q);
         theList.addElement(s);                
         return s;
      }
   	
-     public Question newFRQuestion(Question q) throws RemoteException{
+     public FreeResponse newFRQuestion(Question q) throws RemoteException{
        	FreeResponseServant s = new FreeResponseServant( q);
         theList.addElement(s);                
         return s;
