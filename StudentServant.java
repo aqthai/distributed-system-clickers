@@ -2,7 +2,7 @@
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 
-public class StudentServant extends UnicastRemoteObject implements User {
+public class StudentServant extends UnicastRemoteObject implements Student {
     String theName;
     User theUser;
      
@@ -11,12 +11,12 @@ public class StudentServant extends UnicastRemoteObject implements User {
  		theName = name;
     }
     
-	public int getName() throws RemoteException {
+	public String getName() throws RemoteException {
 	    return theName;
 	}
 	
-   public User getAllState() throws RemoteException{
+    public User getAllState() throws RemoteException{
         return theUser;
-   }
+    }
     
 }

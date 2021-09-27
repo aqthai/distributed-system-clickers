@@ -2,7 +2,7 @@
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 
-public class InstructorServant extends UnicastRemoteObject implements User {
+public class InstructorServant extends UnicastRemoteObject implements Instructor {
     String theName;
     User theUser;
      
@@ -11,7 +11,7 @@ public class InstructorServant extends UnicastRemoteObject implements User {
  		theName = name;
     }
     
-	public int getName() throws RemoteException {
+	public String getName() throws RemoteException {
 	    return theName;
 	}
 	
