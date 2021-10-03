@@ -1,17 +1,20 @@
 import java.io.Serializable;
+import java.util.Scanner;
 
 public class User implements Serializable {
     public String username;
     public String password;
     public String type;
+    public Boolean status;
 
     //	constructors
     public User() { }
     
-    public User(String aType, String aUsername, String aPassword) {
+    protected User(String aType, String aUsername, String aPassword, Boolean aStatus) {
       type = aType;
       username = aUsername;
       password = aPassword;
+      status = false;
     }
 
     public void print(){

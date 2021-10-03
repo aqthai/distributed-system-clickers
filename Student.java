@@ -1,6 +1,7 @@
 import java.rmi.*;
 
 public interface Student extends Remote {
-    String getName() throws RemoteException;
-    User getUser() throws RemoteException;
+    String sendAnswer() throws RemoteException;
+    String getState() throws RemoteException;
+    void refresh() throws RemoteException;
  }

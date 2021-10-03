@@ -11,11 +11,17 @@ public class StudentServant extends UnicastRemoteObject implements Student {
  		theName = name;
     }
     
-	public String getName() throws RemoteException {
-	    return theName;
+	public String getState() throws RemoteException {
+        String status = "";
+        if (theUser.status == true){
+            status = "online";
+        } else {
+            status = "offline";
+        }
+	    return theUser.type + " " + theUser.username + " " + status;
 	}
 	
-    public User getUser() throws RemoteException{
+    public void refresh() throws RemoteException{
         return theUser;
     }
     
