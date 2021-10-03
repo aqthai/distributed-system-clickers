@@ -15,7 +15,7 @@ public class InstructorServant extends UnicastRemoteObject implements Instructor
 	    return theName;
 	}
 	
-   public User getAllState() throws RemoteException{
+   public User getState() throws RemoteException{
         return theUser;
    }
     

@@ -1,23 +1,28 @@
 import java.io.Serializable;
-import java.util.Scanner;
 
 public class User implements Serializable {
     public String username;
     public String password;
     public String type;
-    public Boolean status;
+    public Boolean online;
 
     //	constructors
     public User() { }
     
-    protected User(String aType, String aUsername, String aPassword, Boolean aStatus) {
+    protected User(String aType, String aUsername, String aPassword, Boolean online) {
       type = aType;
       username = aUsername;
       password = aPassword;
-      status = false;
+      online = false;
     }
 
     public void print(){
-      System.out.print(type + " a.k.a " + username);
+      String status;
+      if (online == true){
+        status = "online";
+      } else {
+        status = "offline";
+      }
+      System.out.print(type + " a.k.a " + username + " is " + status);
 	  }
 }
