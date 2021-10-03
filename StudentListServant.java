@@ -15,7 +15,7 @@ public class StudentListServant() extends UnicastRemoteObject implements Student
         return s;
     }
 
-    public Vector allShapes() throws RemoteException{
+    public Vector allStudents() throws RemoteException{
         return theList;
     }
 }
