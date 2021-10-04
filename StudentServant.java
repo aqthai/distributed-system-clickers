@@ -5,21 +5,22 @@ import java.util.Scanner;
 
 public class StudentServant extends UnicastRemoteObject implements Student {
     User theUser;
+    Question theQuestion;
     Scanner scanner = new Scanner(System.in);
      
-    public StudentServant(User u)throws RemoteException{
+    public StudentServant(User u, Question q)throws RemoteException{
     	theUser = u;
+        theQuestion = q;
     }
 
-    public String sendAnswer() throws RemoteException{
+    public void sendAnswer() throws RemoteException{
         System.out.println("Type the answer: ");
-        String answer = scanner.nextLine();
-        return answer;
+        this.theQuestion.answer = scanner.nextLine();
     }
     
 	public String getState() throws RemoteException {
         String status = "";
-        if (theUser.online == true){
+        if (this.theUser.online == true){
             status = "online";
         } else {
             status = "offline";

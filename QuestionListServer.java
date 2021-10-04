@@ -7,10 +7,10 @@ public class QuestionListServer {
 		
         System.out.println("Main OK");
         try{
-            QuestionList aQuestionlist = new QuestionListServant();
+            StudentList aStudentlist = new StudentListServant();
             System.out.println("After create");
             // links a string to aShapeList instance for clients
-			Naming.rebind("QuestionList", aQuestionlist); 
+			Naming.rebind("StudentList", aStudentlist); 
             System.out.println("QuestionList server ready");
         }catch(Exception e) {
             System.out.println("QuestionList server main " + e.getMessage());
