@@ -1,6 +1,6 @@
 import java.rmi.*;
 //import java.rmi.server.UnicastRemoteObject;
-public class QuestionListServer {
+public class StudentListServer {
 	public static void main(String args[]){
         // create security manager to give privileges to execute
 		System.setSecurityManager(new SecurityManager());

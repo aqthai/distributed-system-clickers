@@ -5,17 +5,19 @@ import java.util.Scanner;
 
 public class StudentServant extends UnicastRemoteObject implements Student {
     User theUser;
-    Question theQuestion;
+    String theQuestion;
+    String theAnswer;
     Scanner scanner = new Scanner(System.in);
      
-    public StudentServant(User u, Question q)throws RemoteException{
+    public StudentServant(User u)throws RemoteException{
     	theUser = u;
-        theQuestion = q;
+        theQuestion = "";
+        theAnswer = "";
     }
 
     public void sendAnswer() throws RemoteException{
         System.out.println("Type the answer: ");
-        this.theQuestion.answer = scanner.nextLine();
+        this.theAnswer = scanner.nextLine();
     }
     
 	public String getState() throws RemoteException {

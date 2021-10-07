@@ -2,7 +2,7 @@ import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
 
-public class StudentListServant() extends UnicastRemoteObject implements StudentList {
+public class StudentListServant extends UnicastRemoteObject implements StudentList {
     private Vector<StudentServant> theList;
 
     public StudentListServant() throws RemoteException{
