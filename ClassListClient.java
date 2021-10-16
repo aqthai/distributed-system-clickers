@@ -25,7 +25,20 @@ public class ClassListClient{
         			User u = ((Student)sList.elementAt(i)).getState();
         			u.print();
         		}
-        	} else {
+        	} else if (menu1.equals("Register")) {
+				System.out.println("Enter username: ");
+				String username = scanner.nextLine();
+				System.out.println("Enter password: ");
+				String password = scanner.nextLine();
+				User u = new User("Student", username, password, true);
+				Student you = aClassList.newStudent(u);
+			} else if (menu1.equals("Login")) {
+				System.out.println("Enter username: ");
+				String username = scanner.nextLine();
+				System.out.println("Enter password: ");
+				String password = scanner.nextLine();
+				Student you = aClassList.getStudent(username);
+			} else {
                 GraphicalObject g = new GraphicalObject(shapeType, new Rectangle(50,50,300,400),Color.red,
                   			Color.blue, false);
                 System.out.println("Created graphical object");
@@ -34,6 +47,7 @@ public class ClassListClient{
         	}
 		}catch(RemoteException e) {System.out.println("allStudents: " + e.getMessage());
 	    }catch(Exception e) {System.out.println("Lookup: " + e.getMessage());}
+		scanner.close();
     }
 }
 

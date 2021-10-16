@@ -23,6 +23,14 @@ public class StudentServant extends UnicastRemoteObject implements Student {
 	public User getState() throws RemoteException {
         return theUser;
 	}
+
+	public String getName() throws RemoteException {
+        return theUser.username;
+	}
+
+	public String getPass() throws RemoteException {
+        return theUser.password;
+	}
 	
     public void refresh() throws RemoteException{
         
