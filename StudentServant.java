@@ -20,14 +20,8 @@ public class StudentServant extends UnicastRemoteObject implements Student {
         this.theAnswer = scanner.nextLine();
     }
     
-	public String getState() throws RemoteException {
-        String status = "";
-        if (this.theUser.online == true){
-            status = "online";
-        } else {
-            status = "offline";
-        }
-	    return theUser.type + " " + theUser.username + " " + status;
+	public User getState() throws RemoteException {
+        return theUser;
 	}
 	
     public void refresh() throws RemoteException{
