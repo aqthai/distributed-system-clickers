@@ -6,5 +6,6 @@ public interface Student extends Remote {
     User getState() throws RemoteException;
     String getName() throws RemoteException;
     String getPass() throws RemoteException;
+    Boolean getStatus() throws RemoteException;
     void setStatus() throws RemoteException;
  }

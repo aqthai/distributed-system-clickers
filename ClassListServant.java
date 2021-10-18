@@ -1,19 +1,20 @@
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
+import java.util.ArrayList;
 
 public class ClassListServant extends UnicastRemoteObject implements ClassList {
     private Instructor teacher;
-    private Vector<StudentServant> theList;
+    private ArrayList<StudentServant> theList;
 
     public ClassListServant(User u) throws RemoteException{
         teacher = new InstructorServant(u);
-        theList = new Vector<StudentServant>();
+        theList = new ArrayList<StudentServant>();
     }
 
     public Student newStudent(User u) throws RemoteException {
         StudentServant s = new StudentServant(u);
-        theList.addElement(s);
+        theList.add(s);
         return s;
     }
 
@@ -26,7 +27,7 @@ public class ClassListServant extends UnicastRemoteObject implements ClassList {
         return null;
     }
 
-    public Vector allStudents() throws RemoteException{
+    public ArrayList<StudentServant> allStudents() throws RemoteException{
         return theList;
     }
 }

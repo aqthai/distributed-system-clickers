@@ -7,12 +7,14 @@ public class StudentServant extends UnicastRemoteObject implements Student {
     User theUser;
     String theQuestion;
     String theAnswer;
+    Boolean online;
     Scanner scanner = new Scanner(System.in);
      
     public StudentServant(User u)throws RemoteException{
     	theUser = u;
         theQuestion = "";
         theAnswer = "";
+        online = false;
     }
 
     public void sendAnswer() throws RemoteException{
@@ -28,11 +30,16 @@ public class StudentServant extends UnicastRemoteObject implements Student {
         return theUser.username;
 	}
 
+	public Boolean getStatus() throws RemoteException {
+        return online;
+	}
+
+
 	public void setStatus() throws RemoteException {
-        if (theUser.online == false) {
-            theUser.online = true;
+        if (online == false) {
+            online = true;
         } else {
-            theUser.online = false;
+            online = false;
         }
 	}
 

@@ -1,8 +1,10 @@
 //package examples.RMIShape;
 import java.rmi.*;
 import java.rmi.server.*;
-import java.util.Vector;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 
 public class ClassListClient{
@@ -18,13 +20,15 @@ public class ClassListClient{
         try{
             aClassList  = (ClassList) Naming.lookup("//127.0.0.1/ClassList");
  			System.out.println("Found server");
- 			Vector sList = aClassList.allStudents();
- 			System.out.println("Got vector");
+ 			ArrayList<StudentServant> sList = aClassList.allStudents();
+ 			System.out.println("Got ArrayList");
 			if(menu1.equals("Read")){
-				for(int i=0; i<sList.size(); i++){
-        			User u = ((Student)sList.elementAt(i)).getState();
-					System.out.println(u.username + "is");
-        			u.print();
+				for (Student s : sList){
+					if (s.getStatus()){
+						System.out.println(s.getName() + " is " );
+					}
+        			// User u = (i.next()).getState();
+        			// u.print();
         		}
         	} else if (menu1.equals("Register")) {
 				System.out.println("Enter username: ");
