@@ -34,6 +34,9 @@ public class StudentServant extends UnicastRemoteObject implements Student {
         return online;
 	}
 
+	public String getQuestion() throws RemoteException {
+        return theQuestion;
+	}
 
 	public void setStatus() throws RemoteException {
         if (online == false) {
@@ -42,6 +45,10 @@ public class StudentServant extends UnicastRemoteObject implements Student {
             online = false;
         }
 	}
+
+    public void setQuestion(String question) throws RemoteException {
+        theQuestion = question;
+    }
 
 	public String getPass() throws RemoteException {
         return theUser.password;

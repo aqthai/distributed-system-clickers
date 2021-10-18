@@ -11,29 +11,34 @@ public class InstructorServant extends UnicastRemoteObject implements Instructor
     	theUser = u;
     }
     
-	public String [] makeMultipleChoice() throws RemoteException {
+	public String makeMultipleChoice() throws RemoteException {
         String [] mcQuestion = new String[4]; 
 
         System.out.println("Give the question: ");
 	    mcQuestion[0] = scanner.nextLine();
         System.out.println("Give the first choice: ");
-	    mcQuestion[1] = scanner.nextLine();
+	    mcQuestion[1] = "[1]" + scanner.nextLine();
         System.out.println("Give the second choice: ");
-	    mcQuestion[2] = scanner.nextLine();
+	    mcQuestion[2] = "[2]" + scanner.nextLine();
         System.out.println("Give the third choice: ");
-	    mcQuestion[3] = scanner.nextLine();
+	    mcQuestion[3] = "[3]" + scanner.nextLine();
+
+        String question = "";
+        for (String part : mcQuestion){
+            question += (part + "\n");
+        }
         
-        return mcQuestion;
+        return question;
 	}
 
-	public String [] makeFreeResponse() throws RemoteException {
+	public String makeFreeResponse() throws RemoteException {
         System.out.println("Give the question: ");
 	    String question = scanner.nextLine();
-        System.out.println("Give the answer: ");
-	    String answer = scanner.nextLine();
+        // System.out.println("Give the answer: ");
+	    // String answer = scanner.nextLine();
         
-        String [] frQuestion = {question, answer};  
-        return frQuestion;
+        // String [] frQuestion = {question, answer};  
+        return question;
 	}
 
     /**

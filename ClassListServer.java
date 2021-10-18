@@ -13,16 +13,33 @@ public class ClassListServer {
         System.out.println("What is the instructor's password?");
         String password = scanner.nextLine();
         User leader = new User("Instructor", username, password, true);
-        scanner.close();
+        String request = "";
+        String question = "";
         try{
             
             ClassList aClasslist = new ClassListServant(leader);
-            System.out.println("Welcome " + leader.username + ". Please open a client and sign in.");
+            System.out.println("Welcome " + leader.username);
             // links a string to aClassList instance for clients
 			Naming.rebind("ClassList", aClasslist); 
             System.out.println("ClassList server ready");
+            while (!request.equals("exit")){
+                System.out.println("Free Response (FR), Multiple Choice (MC), or exit?");
+                request = scanner.nextLine();
+                if (request.equals("FR")){
+                    question = aClasslist.getInstructor().makeFreeResponse();
+                    for (StudentServant s : aClasslist.allStudents()){
+						s.setQuestion(question);
+					}
+                } else if (request.equals("MC")){
+                    question = aClasslist.getInstructor().makeMultipleChoice();
+                    for (StudentServant s : aClasslist.allStudents()){
+						s.setQuestion(question);
+					}
+                }
+            }
         }catch(Exception e) {
             System.out.println("ClassList server main " + e.getMessage());
         }
+        scanner.close();
     }
 }
