@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class ClassListServer {
 	public static void main(String args[]){
         // create security manager to give privileges to execute
-		System.setSecurityManager(new SecurityManager());
+		// System.setSecurityManager(new SecurityManager());
 		
         System.out.println("Main OK, Please register an instructor.");
         Scanner scanner = new Scanner(System.in);
@@ -12,7 +12,7 @@ public class ClassListServer {
         String username = scanner.nextLine();
         System.out.println("What is the instructor's password?");
         String password = scanner.nextLine();
-        User leader = new User("Instructor", username, password, false);
+        User leader = new User("Instructor", username, password, true);
         scanner.close();
         try{
             

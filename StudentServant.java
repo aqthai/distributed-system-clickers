@@ -28,6 +28,14 @@ public class StudentServant extends UnicastRemoteObject implements Student {
         return theUser.username;
 	}
 
+	public void setStatus() throws RemoteException {
+        if (theUser.online == false) {
+            theUser.online = true;
+        } else {
+            theUser.online = false;
+        }
+	}
+
 	public String getPass() throws RemoteException {
         return theUser.password;
 	}

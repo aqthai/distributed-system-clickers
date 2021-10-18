@@ -23,6 +23,6 @@ public class User implements Serializable {
       } else {
         status = "offline";
       }
-      System.out.print(type + " a.k.a " + username + " is " + status);
+      System.out.println(type + " a.k.a " + username + " is " + status);
 	  }
 }
