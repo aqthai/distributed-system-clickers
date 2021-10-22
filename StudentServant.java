@@ -39,10 +39,12 @@ public class StudentServant extends UnicastRemoteObject implements Student {
 	}
 
 	public void setStatus() throws RemoteException {
-        if (online == false) {
-            online = true;
+        if (this.online == false) {
+            this.online = true;
+            System.out.println(this.getName() + " has logged in");
         } else {
-            online = false;
+            this.online = false;
+            System.out.println(this.getName() + " has logged out");
         }
 	}
 

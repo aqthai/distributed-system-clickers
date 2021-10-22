@@ -1,6 +1,5 @@
 //package examples.RMIShape;
 import java.rmi.*;
-import java.rmi.server.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -23,7 +22,7 @@ public class ClassListClient{
 				System.out.println("Login or Register?: (or exit)");
 				menu1 = scanner.nextLine();
 				if(menu1.equals("Read")){
-					for (Student s : sList){
+					for (StudentServant s : sList){
 						if (s.getStatus()){
 							System.out.println(s.getName() + " is " );
 						}
@@ -35,9 +34,9 @@ public class ClassListClient{
 					String username = scanner.nextLine();
 					System.out.println("Enter password: ");
 					String password = scanner.nextLine();
-					User u = new User("Student", username, password, true);
+					User u = new User("Student", username, password);
 					Student you = aClassList.newStudent(u);
-					System.out.println(username + " has registered");
+					System.out.println(you.getName() + " has registered");
 				} else if (menu1.equals("Login")) {
 					System.out.println("Enter username: ");
 					String username = scanner.nextLine();
@@ -46,9 +45,11 @@ public class ClassListClient{
 					Student you = aClassList.getStudent(username);
 					if (you.getState().password.equals(password)){
 						you.setStatus();
+						System.out.println(username + " has logged in");
+					} else {
+						System.out.println("Wrong username or password.  Please try again.");
 					}
-					System.out.println(username + " has logged in");
-					while ()
+					
 					System.out.println(you.getQuestion());
 				}
 			}

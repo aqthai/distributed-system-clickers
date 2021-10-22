@@ -8,7 +8,7 @@ public class User implements Serializable {
     //	constructors
     public User() { }
     
-    protected User(String aType, String aUsername, String aPassword, Boolean online) {
+    protected User(String aType, String aUsername, String aPassword) {
       type = aType;
       username = aUsername;
       password = aPassword;

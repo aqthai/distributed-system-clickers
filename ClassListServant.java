@@ -17,8 +17,8 @@ public class ClassListServant extends UnicastRemoteObject implements ClassList {
         return s;
     }
 
-    public Student getStudent(String name) throws RemoteException {
-        for (Student s : theList){
+    public StudentServant getStudent(String name) throws RemoteException {
+        for (StudentServant s : theList){
             if (s.getState().username.equals(name)){
                 return s;
             }

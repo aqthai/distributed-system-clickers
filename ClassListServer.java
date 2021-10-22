@@ -12,7 +12,7 @@ public class ClassListServer {
         String username = scanner.nextLine();
         System.out.println("What is the instructor's password?");
         String password = scanner.nextLine();
-        User leader = new User("Instructor", username, password, true);
+        User leader = new User("Instructor", username, password);
         String request = "";
         String question = "";
         try{
@@ -37,9 +37,10 @@ public class ClassListServer {
 					}
                 }
             }
+            scanner.close();
+            
         }catch(Exception e) {
             System.out.println("ClassList server main " + e.getMessage());
         }
-        scanner.close();
     }
 }
