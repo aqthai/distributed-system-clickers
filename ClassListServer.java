@@ -1,4 +1,6 @@
 import java.rmi.*;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Scanner;
 //import java.rmi.server.UnicastRemoteObject;
 public class ClassListServer {
@@ -18,6 +20,8 @@ public class ClassListServer {
         try{
             
             ClassList aClasslist = new ClassListServant(leader);
+            Registry registry = LocateRegistry.createRegistry(1099);
+            registry.bind("ClassList", aClasslist);
             System.out.println("Welcome " + leader.username);
             // links a string to aClassList instance for clients
 			Naming.rebind("ClassList", aClasslist); 
