@@ -46,9 +46,11 @@ public class ClassListServer {
                     System.out.println("What's the instructor's password?");
                     password = scanner.nextLine();
                     aClasslist.setInstructor(new User("Instructor", username, password));
+                } else if (request.equals("exit")){
+                    System.out.println("Thank you " + leader.username);
+                    scanner.close();
                 }
             }
-            scanner.close();
             
         }catch(Exception e) {
             System.out.println("ClassList server main " + e.getMessage());
