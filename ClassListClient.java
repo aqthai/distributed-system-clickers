@@ -8,7 +8,6 @@ public class ClassListClient{
    public static void main(String args[]){
 		Scanner scanner = new Scanner(System.in);
 		String menu1 = "";
-		String menu2 = "";
 		String answer = "";
 		
  		// if(System.getSecurityManager() == null){

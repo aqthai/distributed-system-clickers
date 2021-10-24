@@ -23,6 +23,7 @@ public class StudentServant extends UnicastRemoteObject implements Student {
 
     public void sendAnswer(String answer) throws RemoteException{
         this.theAnswer = answer;
+        System.out.println(this.theUser.username + " says " + answer);
     }
     
 	public User getState() throws RemoteException {
@@ -53,7 +54,6 @@ public class StudentServant extends UnicastRemoteObject implements Student {
 
     public void setQuestion(String question) throws RemoteException {
         this.theQuestion = question;
-        System.out.println(theQuestion);
     }
 
 	public String getPass() throws RemoteException {
