@@ -36,7 +36,7 @@ public class ClassListClient{
 					String password = scanner.nextLine();
 					User u = new User("Student", username, password);
 					Student you = aClassList.newStudent(u);
-					System.out.println(you.getName() + " has registered");
+					//System.out.println(you.getName() + " has registered");
 				} else if (menu1.equals("Login")) {
 					System.out.println("Enter username: ");
 					String username = scanner.nextLine();

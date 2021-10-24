@@ -52,7 +52,7 @@ public class StudentServant extends UnicastRemoteObject implements Student {
     }
 
     public void setQuestion(String question) throws RemoteException {
-        theQuestion = question;
+        this.theQuestion = question;
         System.out.println(theQuestion);
     }
 
