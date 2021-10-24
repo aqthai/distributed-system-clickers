@@ -1,5 +1,7 @@
 //package examples.RMIShape;
 import java.rmi.*;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -15,7 +17,8 @@ public class ClassListClient{
         // } else System.out.println("Already has a security manager, so cant set RMI SM");
         ClassList aClassList = null;
         try{
-            aClassList  = (ClassList) Naming.lookup("//127.0.0.1/ClassList");
+			Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+			aClassList  = (ClassList)registry.lookup("ClassList");
  			System.out.println("Found server");
  			ArrayList<StudentServant> sList = aClassList.allStudents();
  			System.out.println("Got ArrayList");
