@@ -23,7 +23,7 @@ public class ClassListServer {
 			Naming.rebind("ClassList", aClasslist); 
             System.out.println("ClassList server ready");
             while (!request.equals("exit")){
-                System.out.println("Free Response (FR), Multiple Choice (MC), or exit?");
+                System.out.println("Free Response (FR), Multiple Choice (MC), get answers (GA) or exit?");
                 request = scanner.nextLine();
                 if (request.equals("FR")){
                     question = aClasslist.getInstructor().makeFreeResponse();
@@ -34,6 +34,10 @@ public class ClassListServer {
                     question = aClasslist.getInstructor().makeMultipleChoice();
                     for (StudentServant s : aClasslist.allStudents()){
 						s.setQuestion(question);
+					}
+                } else if (request.equals("GA")){
+                    for (StudentServant s : aClasslist.allStudents()){
+						System.out.println(s.getName() + " has typed " + s.getAnswer());
 					}
                 }
             }

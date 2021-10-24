@@ -28,8 +28,6 @@ public class ClassListClient{
 						if (s.getStatus()){
 							System.out.println(s.getName() + " is " );
 						}
-						// User u = (i.next()).getState();
-						// u.print();
 					}
 				} else if (menu1.equals("Register")) {
 					System.out.println("Enter username: ");
@@ -58,7 +56,7 @@ public class ClassListClient{
 							} else {
 								you.sendAnswer(answer);
 								System.out.println("Answer submitted");
-								System.out.println("Wait for questions and type answer");
+								System.out.println("Wait for questions and type answer [<your answer>, \"refresh\", \"logout\"]");
 								answer = scanner.nextLine();
 							}
 						}

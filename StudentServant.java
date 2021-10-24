@@ -17,6 +17,10 @@ public class StudentServant extends UnicastRemoteObject implements Student {
         online = false;
     }
 
+    public String getAnswer() throws RemoteException{
+        return theAnswer;
+    }
+
     public void sendAnswer(String answer) throws RemoteException{
         this.theAnswer = answer;
     }
