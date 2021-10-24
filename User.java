@@ -15,6 +15,6 @@ public class User implements Serializable {
     }
 
     public void print(){
-      System.out.println(type + " a.k.a " + username + " exists ");
+      System.out.println(type + " a.k.a " + username);
 	  }
 }

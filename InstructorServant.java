@@ -34,10 +34,6 @@ public class InstructorServant extends UnicastRemoteObject implements Instructor
 	public String makeFreeResponse() throws RemoteException {
         System.out.println("Give the question: ");
 	    String question = scanner.nextLine();
-        // System.out.println("Give the answer: ");
-	    // String answer = scanner.nextLine();
-        
-        // String [] frQuestion = {question, answer};  
         return question;
 	}
 

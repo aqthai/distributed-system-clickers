@@ -8,6 +8,8 @@ public class ClassListClient{
    public static void main(String args[]){
 		Scanner scanner = new Scanner(System.in);
 		String menu1 = "";
+		String menu2 = "";
+		String answer = "";
 		
  		// if(System.getSecurityManager() == null){
         // 	System.setSecurityManager(new SecurityManager());
@@ -44,19 +46,32 @@ public class ClassListClient{
 					String password = scanner.nextLine();
 					Student you = aClassList.getStudent(username);
 					if (you.getState().password.equals(password)){
-						you.setStatus();
-						System.out.println(username + " has logged in");
+						you.setStatusOn();
+						System.out.println("Wait for questions and type answer [<your answer>, \"refresh\", \"logout\"]");
+						answer = scanner.nextLine();
+						while (!answer.equals("logout")){
+							if (answer.equals("refresh")){
+								System.out.println(you.getQuestion());
+								System.out.println("Type answer: ");
+								answer = scanner.nextLine();
+								you.sendAnswer(answer);
+							} else {
+								you.sendAnswer(answer);
+								System.out.println("Answer submitted");
+								System.out.println("Wait for questions and type answer");
+								answer = scanner.nextLine();
+							}
+						}
+						you.setStatusOff();
 					} else {
 						System.out.println("Wrong username or password.  Please try again.");
 					}
-					
-					System.out.println(you.getQuestion());
 				}
 			}
-			
+			scanner.close();
 		}catch(RemoteException e) {System.out.println("allStudents: " + e.getMessage());
 	    }catch(Exception e) {System.out.println("Lookup: " + e);}
-		scanner.close();
+		
     }
 }
 

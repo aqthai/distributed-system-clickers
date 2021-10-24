@@ -17,9 +17,8 @@ public class StudentServant extends UnicastRemoteObject implements Student {
         online = false;
     }
 
-    public void sendAnswer() throws RemoteException{
-        System.out.println("Type the answer: ");
-        this.theAnswer = scanner.nextLine();
+    public void sendAnswer(String answer) throws RemoteException{
+        this.theAnswer = answer;
     }
     
 	public User getState() throws RemoteException {
@@ -38,18 +37,19 @@ public class StudentServant extends UnicastRemoteObject implements Student {
         return theQuestion;
 	}
 
-	public void setStatus() throws RemoteException {
-        if (this.online == false) {
-            this.online = true;
-            System.out.println(this.getName() + " has logged in");
-        } else {
-            this.online = false;
-            System.out.println(this.getName() + " has logged out");
-        }
+	public void setStatusOn() throws RemoteException {
+        this.online = true;
+        System.out.println(this.getName() + " has logged in");
 	}
+
+    public void setStatusOff() throws RemoteException {
+        this.online = false;
+        System.out.println(this.getName() + " has logged out");
+    }
 
     public void setQuestion(String question) throws RemoteException {
         theQuestion = question;
+        System.out.println(theQuestion);
     }
 
 	public String getPass() throws RemoteException {

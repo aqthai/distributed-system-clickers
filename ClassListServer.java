@@ -37,6 +37,7 @@ public class ClassListServer {
 					}
                 }
             }
+            System.out.println("Thank you" + leader.username);
             scanner.close();
             
         }catch(Exception e) {
