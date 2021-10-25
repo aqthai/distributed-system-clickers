@@ -8,7 +8,6 @@ public class StudentServant extends UnicastRemoteObject implements Student {
     String theQuestion;
     String theAnswer;
     Boolean online;
-    Scanner scanner = new Scanner(System.in);
      
     public StudentServant(User u)throws RemoteException{
     	theUser = u;
