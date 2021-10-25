@@ -16,6 +16,13 @@ public class User implements Serializable {
       status = aStatus;
     }
 
+    protected User(String aType, String aUsername, String aPassword) {
+      type = aType;
+      username = aUsername;
+      password = aPassword;
+      status = "offline";
+    }
+
     public void print(){
       System.out.println("(" + status + ") " + type + " " + username);
 	  }
@@ -43,4 +50,12 @@ public class User implements Serializable {
     public void setTypeInstructor(){
       this.type = "Instructor";
     }
+
+    public String toString() {
+      return "User{" +
+              "username='" + username + '\'' +
+              ", password='" + password + '\'' +
+              ", type='" + type + '\'' +
+              '}';
+  }
 }

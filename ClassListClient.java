@@ -26,7 +26,7 @@ public class ClassListClient{
 				System.out.println("Login or Register?: (or exit)");
 				menu1 = scanner.nextLine();
 				if(menu1.equalsIgnoreCase("Read")){
-					// keeps data from registry live
+					// updates data from registry
 					registry = LocateRegistry.getRegistry("localhost", 1099);
 					aClassList  = (ClassList)registry.lookup("ClassList");
 					sList = aClassList.allStudents();
@@ -49,22 +49,26 @@ public class ClassListClient{
 					Student you = aClassList.getStudent(username);
 					if (you.getPass().equals(password)){
 						you.setStatusOn();
-						System.out.println("Wait for questions and type answer [<your answer>, \"refresh\", \"logout\"]");
+						System.out.println("Wait for questions and type answer [<your answer>, \"read\", \"logout\"]");
 						answer = scanner.nextLine();
 						while (!answer.equalsIgnoreCase("logout")){
-							if (answer.equalsIgnoreCase("refresh")){
+							if (answer.equalsIgnoreCase("read")){
+								// updates data from registry
+								registry = LocateRegistry.getRegistry("localhost", 1099);
+								aClassList  = (ClassList)registry.lookup("ClassList");
+								sList = aClassList.allStudents();
 								for (Student s : sList){
 									User u = s.getState();
 									u.print();
 								}
 								System.out.println(you.getQuestion());
-								System.out.println("Type answer: [<another answer>, \"refresh\", \"logout\"]");
+								System.out.println("Type answer: [<another answer>, \"read\", \"logout\"]");
 								answer = scanner.nextLine();
 								you.sendAnswer(answer);
 							} else {
 								you.sendAnswer(answer);
 								System.out.println("Answer submitted");
-								System.out.println("Wait for questions and type answer [<your answer>, \"refresh\", \"logout\"]");
+								System.out.println("Wait for questions and type answer [<your answer>, \"read\", \"logout\"]");
 								answer = scanner.nextLine();
 							}
 						}
