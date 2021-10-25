@@ -17,7 +17,7 @@ public class ClassListServer {
 
         readRegisterUsersFile();
 		
-        System.out.println("Main OK, Please register an instructor.");
+        System.out.println("Main OK, Please sign in an instructor.");
         Scanner scanner = new Scanner(System.in);
         System.out.println("What is the instructor's username?");
         String username = scanner.nextLine();
