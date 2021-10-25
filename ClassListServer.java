@@ -12,10 +12,9 @@ public class ClassListServer {
 		// System.setSecurityManager(new SecurityManager());
 
         String fileName = "registeredusers.csv";
+        ArrayList<User> registeredUsers;
 
         createRegisteredUsersFile(fileName);
-
-        readRegisterUsersFile();
 		
         System.out.println("Main OK, Please sign in an instructor.");
         Scanner scanner = new Scanner(System.in);
@@ -29,6 +28,11 @@ public class ClassListServer {
         try{
             
             ClassList aClasslist = new ClassListServant(leader);
+            // grab users from file and add them to ArrayList within aClassList
+            registeredUsers = readRegisterUsersFile();
+            for (User person : registeredUsers){
+                aClasslist.newStudent(person);
+            }
             aClasslist.newStudent(leader);
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.bind("ClassList", aClasslist);
@@ -86,6 +90,9 @@ public class ClassListServer {
                 }
             }
             System.out.println("Thank you " + leader.username);
+            for (Student s : aClasslist.allStudents()){
+                registerUserToFile(fileName, s.getName(), s.getPass(), "Student");
+            };
             scanner.close();
             
         }catch(Exception e) {
@@ -124,7 +131,7 @@ public class ClassListServer {
             System.out.println(e.getMessage());
         }
     }
-    public static void readRegisterUsersFile() {
+    public static ArrayList<User> readRegisterUsersFile() {
 
         ArrayList<User> registeredUsers = new ArrayList<User>();
         // file name
@@ -148,6 +155,7 @@ public class ClassListServer {
             for (User user : registeredUsers) {
                 System.out.println(user.toString());
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -161,5 +169,6 @@ public class ClassListServer {
             }
 
         }
+        return registeredUsers;
     }
 }
