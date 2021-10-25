@@ -2,6 +2,7 @@ import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
+
 //import java.rmi.server.UnicastRemoteObject;
 public class ClassListServer {
 	public static void main(String args[]){
@@ -26,31 +27,31 @@ public class ClassListServer {
             // links a string to aClassList instance for clients
 			Naming.rebind("ClassList", aClasslist); 
             System.out.println("ClassList server ready");
-            while (!request.equals("exit")){
+            while (!request.equalsIgnoreCase("exit")){
                 System.out.println("Free Response (FR), Multiple Choice (MC), get answers (GA), logout, or exit?");
                 request = scanner.nextLine();
-                if (request.equals("FR")){
+                if (request.equalsIgnoreCase("FR")){
                     question = aClasslist.getInstructor().makeFreeResponse();
                     for (StudentServant s : aClasslist.allStudents()){
 						s.setQuestion(question);
 					}
-                } else if (request.equals("MC")){
+                } else if (request.equalsIgnoreCase("MC")){
                     question = aClasslist.getInstructor().makeMultipleChoice();
                     for (StudentServant s : aClasslist.allStudents()){
 						s.setQuestion(question);
 					}
-                } else if (request.equals("GA")){
+                } else if (request.equalsIgnoreCase("GA")){
                     for (StudentServant s : aClasslist.allStudents()){
 						System.out.println(s.getName() + " has typed " + s.getAnswer());
 					}
-                } else if (request.equals("logout")){
+                } else if (request.equalsIgnoreCase("logout")){
                     System.out.println("Thank you " + leader.username);
                     System.out.println("Please assign another teacher.  What's the instructor's name?");
                     username = scanner.nextLine();
                     System.out.println("What's the instructor's password?");
                     password = scanner.nextLine();
                     aClasslist.setInstructor(new User("Instructor", username, password));
-                } else if (request.equals("exit")){
+                } else if (request.equalsIgnoreCase("exit")){
                     System.out.println("Thank you " + leader.username);
                     scanner.close();
                 }

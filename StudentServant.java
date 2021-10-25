@@ -1,14 +1,12 @@
 //package examples.RMIShape;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Scanner;
 
 public class StudentServant extends UnicastRemoteObject implements Student {
     User theUser;
     String theQuestion;
     String theAnswer;
     Boolean online;
-    Scanner scanner = new Scanner(System.in);
      
     public StudentServant(User u)throws RemoteException{
     	theUser = u;

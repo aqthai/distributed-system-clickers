@@ -22,24 +22,23 @@ public class ClassListClient{
  			System.out.println("Found server");
  			ArrayList<StudentServant> sList = aClassList.allStudents();
  			System.out.println("Got ArrayList");
-			while (!menu1.equals("exit")){
+			while (!menu1.equalsIgnoreCase("exit")){
 				System.out.println("Login or Register?: (or exit)");
 				menu1 = scanner.nextLine();
-				if(menu1.equals("Read")){
+				if(menu1.equalsIgnoreCase("Read")){
 					for (StudentServant s : sList){
-						if (s.getStatus()){
-							System.out.println(s.getName() + " is " );
+						if (s.getStatus() == true){
+							System.out.println(s.getName() + " is online");
 						}
 					}
-				} else if (menu1.equals("Register")) {
+				} else if (menu1.equalsIgnoreCase("Register")) {
 					System.out.println("Enter username: ");
 					String username = scanner.nextLine();
 					System.out.println("Enter password: ");
 					String password = scanner.nextLine();
 					User u = new User("Student", username, password);
 					Student you = aClassList.newStudent(u);
-					//System.out.println(you.getName() + " has registered");
-				} else if (menu1.equals("Login")) {
+				} else if (menu1.equalsIgnoreCase("Login")) {
 					System.out.println("Enter username: ");
 					String username = scanner.nextLine();
 					System.out.println("Enter password: ");
@@ -49,8 +48,13 @@ public class ClassListClient{
 						you.setStatusOn();
 						System.out.println("Wait for questions and type answer [<your answer>, \"refresh\", \"logout\"]");
 						answer = scanner.nextLine();
-						while (!answer.equals("logout")){
-							if (answer.equals("refresh")){
+						while (!answer.equalsIgnoreCase("logout")){
+							if (answer.equalsIgnoreCase("refresh")){
+								for (StudentServant s : sList){
+									if (s.getStatus() == true){
+										System.out.println(s.getName() + " is online");
+									}
+								}
 								System.out.println(you.getQuestion());
 								System.out.println("Type answer: ");
 								answer = scanner.nextLine();
