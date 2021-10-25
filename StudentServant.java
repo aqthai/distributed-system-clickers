@@ -6,13 +6,11 @@ public class StudentServant extends UnicastRemoteObject implements Student {
     User theUser;
     String theQuestion;
     String theAnswer;
-    Boolean online;
      
     public StudentServant(User u)throws RemoteException{
     	theUser = u;
         theQuestion = "";
         theAnswer = "";
-        online = false;
     }
 
     public String getAnswer() throws RemoteException{
@@ -21,7 +19,6 @@ public class StudentServant extends UnicastRemoteObject implements Student {
 
     public void sendAnswer(String answer) throws RemoteException{
         this.theAnswer = answer;
-        System.out.println(this.theUser.username + " says " + answer);
     }
     
 	public User getState() throws RemoteException {
@@ -32,8 +29,8 @@ public class StudentServant extends UnicastRemoteObject implements Student {
         return theUser.username;
 	}
 
-	public Boolean getStatus() throws RemoteException {
-        return online;
+	public String getStatus() throws RemoteException {
+        return this.theUser.getStatus();
 	}
 
 	public String getQuestion() throws RemoteException {
@@ -41,12 +38,12 @@ public class StudentServant extends UnicastRemoteObject implements Student {
 	}
 
 	public void setStatusOn() throws RemoteException {
-        this.online = true;
+        this.theUser.setStatusOn();
         System.out.println(this.getName() + " has logged in");
 	}
 
     public void setStatusOff() throws RemoteException {
-        this.online = false;
+        this.theUser.setStatusOff();
         System.out.println(this.getName() + " has logged out");
     }
 
@@ -55,11 +52,7 @@ public class StudentServant extends UnicastRemoteObject implements Student {
     }
 
 	public String getPass() throws RemoteException {
-        return theUser.password;
+        return this.theUser.password;
 	}
-	
-    public void refresh() throws RemoteException{
-        
-    }
     
 }

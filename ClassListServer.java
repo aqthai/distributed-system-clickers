@@ -15,7 +15,7 @@ public class ClassListServer {
         String username = scanner.nextLine();
         System.out.println("What is the instructor's password?");
         String password = scanner.nextLine();
-        User leader = new User("Instructor", username, password);
+        User leader = new User("Instructor", username, password, "online");
         String request = "";
         String question = "";
         try{
@@ -43,15 +43,18 @@ public class ClassListServer {
 					}
                 } else if (request.equalsIgnoreCase("GA")){
                     for (StudentServant s : aClasslist.allStudents()){
-						System.out.println(s.getName() + " has typed " + s.getAnswer());
+                        if (!s.getAnswer().equals("")){
+                            System.out.println("(" + s.getStatus() + ") " + s.getName() + " has typed " + s.getAnswer());
+                        }
 					}
                 } else if (request.equalsIgnoreCase("logout")){
                     System.out.println("Thank you " + leader.username);
+                    aClasslist.getInstructor().getState().setStatusOff();
                     System.out.println("Please assign another teacher.  What's the instructor's name?");
                     username = scanner.nextLine();
                     System.out.println("What's the instructor's password?");
                     password = scanner.nextLine();
-                    aClasslist.setInstructor(new User("Instructor", username, password));
+                    aClasslist.setInstructor(new User("Instructor", username, password, "online"));
                 } else if (request.equalsIgnoreCase("exit")){
                     System.out.println("Thank you " + leader.username);
                     scanner.close();

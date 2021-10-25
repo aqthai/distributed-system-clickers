@@ -36,20 +36,9 @@ public class InstructorServant extends UnicastRemoteObject implements Instructor
 	    String question = scanner.nextLine();
         return question;
 	}
-
-    /**
-     * getAnswers reads from array of answers of question
-     * @return an array of String responses from Question
-     * @throws RemoteException
-     */
-    public String [] viewAnswers() throws RemoteException {
-        // should be size of answers from online students
-        String [] answers = new String [0];
-        return answers;
-    }
 	
    public User getState() throws RemoteException{
-        return theUser;
+        return this.theUser;
    }
     
 }

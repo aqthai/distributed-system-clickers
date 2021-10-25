@@ -35,15 +35,15 @@ public class ClassListClient{
 					String username = scanner.nextLine();
 					System.out.println("Enter password: ");
 					String password = scanner.nextLine();
-					User u = new User("Student", username, password);
-					Student you = aClassList.newStudent(u);
+					User u = new User("Student", username, password, "offline");
+					aClassList.newStudent(u);
 				} else if (menu1.equalsIgnoreCase("Login")) {
 					System.out.println("Enter username: ");
 					String username = scanner.nextLine();
 					System.out.println("Enter password: ");
 					String password = scanner.nextLine();
 					Student you = aClassList.getStudent(username);
-					if (you.getState().password.equals(password)){
+					if (you.getPass().equals(password)){
 						you.setStatusOn();
 						System.out.println("Wait for questions and type answer [<your answer>, \"refresh\", \"logout\"]");
 						answer = scanner.nextLine();
