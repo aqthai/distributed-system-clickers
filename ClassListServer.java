@@ -58,7 +58,9 @@ public class ClassListServer {
                     System.out.println("Thank you " + aClasslist.getInstructor().getState().username);
                     aClasslist.getInstructor().getState().setStatusOff();
                     aClasslist.getInstructor().getState().setTypeStudent();
+                    // gets the instructor in the StudentServant list and turns him/her to an offline student
                     aClasslist.getStudent(aClasslist.getInstructor().getState().username).setStatusOff();
+                    aClasslist.getStudent(aClasslist.getInstructor().getState().username).getState().setTypeStudent();
                     System.out.println("Please assign another teacher.  Register or Login?");
                     request = scanner.nextLine();
                     if (request.equalsIgnoreCase("register")){

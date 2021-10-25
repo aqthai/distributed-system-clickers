@@ -27,6 +27,10 @@ public class User implements Serializable {
       System.out.println("(" + status + ") " + type + " " + username);
 	  }
 
+    public String getName(){
+      return username;
+    }
+
     public String getStatus(){
       return this.status;
     }
