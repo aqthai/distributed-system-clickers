@@ -24,11 +24,23 @@ public class User implements Serializable {
       return this.status;
     }
 
+    public String getType(){
+      return this.type;
+    }
+
     public void setStatusOff() {
       this.status = "offline";
     }
 
     public void setStatusOn() {
       this.status = "online";
+    }
+
+    public void setTypeStudent(){
+      this.type = "Student";
+    }
+
+    public void setTypeInstructor(){
+      this.type = "Instructor";
     }
 }

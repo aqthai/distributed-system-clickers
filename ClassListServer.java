@@ -50,6 +50,7 @@ public class ClassListServer {
                 } else if (request.equalsIgnoreCase("logout")){
                     System.out.println("Thank you " + leader.username);
                     aClasslist.getInstructor().getState().setStatusOff();
+                    aClasslist.getInstructor().getState().setTypeStudent();
                     System.out.println("Please assign another teacher.  Register or Login?");
                     request = scanner.nextLine();
                     if (request.equalsIgnoreCase("register")){
@@ -66,6 +67,7 @@ public class ClassListServer {
                         password = scanner.nextLine();
                         leader = aClasslist.getStudent(username).getState();
                         if (aClasslist.getStudent(username).getPass().equals(password)){
+                            leader.setTypeInstructor();
                             aClasslist.setInstructor(leader);
                             aClasslist.getStudent(username).setStatusOn();
                         }

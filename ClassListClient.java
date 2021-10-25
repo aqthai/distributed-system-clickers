@@ -58,7 +58,7 @@ public class ClassListClient{
 									u.print();
 								}
 								System.out.println(you.getQuestion());
-								System.out.println("Type answer: ");
+								System.out.println("Type answer: [<another answer>, \"refresh\", \"logout\"]");
 								answer = scanner.nextLine();
 								you.sendAnswer(answer);
 							} else {
