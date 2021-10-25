@@ -26,10 +26,9 @@ public class ClassListClient{
 				System.out.println("Login or Register?: (or exit)");
 				menu1 = scanner.nextLine();
 				if(menu1.equalsIgnoreCase("Read")){
-					for (StudentServant s : sList){
-						if (s.getStatus() == true){
-							System.out.println(s.getName() + " is online");
-						}
+					for (int i = 0; i <sList.size(); i++){
+						User u = ((Student)sList.get(i)).getState();
+						u.print();
 					}
 				} else if (menu1.equalsIgnoreCase("Register")) {
 					System.out.println("Enter username: ");
@@ -50,10 +49,9 @@ public class ClassListClient{
 						answer = scanner.nextLine();
 						while (!answer.equalsIgnoreCase("logout")){
 							if (answer.equalsIgnoreCase("refresh")){
-								for (StudentServant s : sList){
-									if (s.getStatus() == true){
-										System.out.println(s.getName() + " is online");
-									}
+								for (int i = 0; i <sList.size(); i++){
+									User u = ((Student)sList.get(i)).getState();
+									u.print();
 								}
 								System.out.println(you.getQuestion());
 								System.out.println("Type answer: ");

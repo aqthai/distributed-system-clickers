@@ -21,6 +21,7 @@ public class ClassListServer {
         try{
             
             ClassList aClasslist = new ClassListServant(leader);
+            aClasslist.newStudent(leader);
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.bind("ClassList", aClasslist);
             System.out.println("Welcome " + leader.username);
