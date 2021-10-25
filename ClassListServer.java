@@ -50,16 +50,30 @@ public class ClassListServer {
                 } else if (request.equalsIgnoreCase("logout")){
                     System.out.println("Thank you " + leader.username);
                     aClasslist.getInstructor().getState().setStatusOff();
-                    System.out.println("Please assign another teacher.  What's the instructor's name?");
-                    username = scanner.nextLine();
-                    System.out.println("What's the instructor's password?");
-                    password = scanner.nextLine();
-                    aClasslist.setInstructor(new User("Instructor", username, password, "online"));
-                } else if (request.equalsIgnoreCase("exit")){
-                    System.out.println("Thank you " + leader.username);
-                    scanner.close();
+                    System.out.println("Please assign another teacher.  Register or Login?");
+                    request = scanner.nextLine();
+                    if (request.equalsIgnoreCase("register")){
+                        System.out.println("What's the instructor's name?");
+                        username = scanner.nextLine();
+                        System.out.println("What's the instructor's password?");
+                        password = scanner.nextLine();
+                        aClasslist.setInstructor(new User("Instructor", username, password, "online"));
+                        aClasslist.newStudent(new User("Instructor", username, password, "online"));
+                    } else if (request.equalsIgnoreCase("login")){
+                        System.out.println("Enter username: ");
+                        username = scanner.nextLine();
+                        System.out.println("Enter password: ");
+                        password = scanner.nextLine();
+                        leader = aClasslist.getStudent(username).getState();
+                        if (aClasslist.getStudent(username).getPass().equals(password)){
+                            aClasslist.setInstructor(leader);
+                            aClasslist.getStudent(username).setStatusOn();
+                        }
+                    } 
                 }
             }
+            System.out.println("Thank you " + leader.username);
+            scanner.close();
             
         }catch(Exception e) {
             System.out.println("ClassList server main " + e.getMessage());
