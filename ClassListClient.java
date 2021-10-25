@@ -26,8 +26,12 @@ public class ClassListClient{
 				System.out.println("Login or Register?: (or exit)");
 				menu1 = scanner.nextLine();
 				if(menu1.equalsIgnoreCase("Read")){
-					for (int i = 0; i <sList.size(); i++){
-						User u = ((Student)sList.get(i)).getState();
+					// keeps data from registry live
+					registry = LocateRegistry.getRegistry("localhost", 1099);
+					aClassList  = (ClassList)registry.lookup("ClassList");
+					sList = aClassList.allStudents();
+					for (Student s : sList){
+						User u = s.getState();
 						u.print();
 					}
 				} else if (menu1.equalsIgnoreCase("Register")) {
@@ -49,8 +53,8 @@ public class ClassListClient{
 						answer = scanner.nextLine();
 						while (!answer.equalsIgnoreCase("logout")){
 							if (answer.equalsIgnoreCase("refresh")){
-								for (int i = 0; i <sList.size(); i++){
-									User u = ((Student)sList.get(i)).getState();
+								for (Student s : sList){
+									User u = s.getState();
 									u.print();
 								}
 								System.out.println(you.getQuestion());
