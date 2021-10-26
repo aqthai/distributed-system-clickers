@@ -11,11 +11,17 @@ public class ClassListServant extends UnicastRemoteObject implements ClassList {
         theList = new ArrayList<StudentServant>();
     }
 
-    public Student newStudent(User u) throws RemoteException {
-        StudentServant s = new StudentServant(u);
-        theList.add(s);
-        System.out.println(s.getName() + " has registered");
-        return s;
+    public void newStudent(User u) throws RemoteException {
+        ArrayList<String> names = new ArrayList<String>();
+        for (int i = 0; i < theList.size(); i++){
+            names.add(theList.get(i).getName());
+        }
+        if (!names.contains(u.getName())){
+            StudentServant s = new StudentServant(u);
+            theList.add(s);
+            System.out.println(s.getName() + " has registered");
+        }
+        
     }
 
     public StudentServant getStudent(String name) throws RemoteException {

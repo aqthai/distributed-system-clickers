@@ -1,79 +1,106 @@
-import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
+//import java.rmi.server.UnicastRemoteObject;
 public class ClassListServer {
-    public static void main(String args[]) throws IOException {
+	public static void main(String args[]){
         // create security manager to give privileges to execute
-        // System.setSecurityManager(new SecurityManager());
+		// System.setSecurityManager(new SecurityManager());
 
-        createInstructorGUI();
         String fileName = "registeredusers.csv";
+        ArrayList<User> registeredUsers;
 
         createRegisteredUsersFile(fileName);
-        readRegisterUsersFile();
-
-
-        System.out.println("Main OK, Please register an instructor.");
+		
+        System.out.println("Main OK, Please sign in an instructor.");
         Scanner scanner = new Scanner(System.in);
         System.out.println("What is the instructor's username?");
         String username = scanner.nextLine();
         System.out.println("What is the instructor's password?");
         String password = scanner.nextLine();
-        User leader = new User("Instructor", username, password);
+        User leader = new User("Instructor", username, password, "online");
         String request = "";
         String question = "";
-        try {
-
+        try{
+            
             ClassList aClasslist = new ClassListServant(leader);
+            // grab users from file and add them to ArrayList within aClassList
+            registeredUsers = readRegisterUsersFile();
+            for (User person : registeredUsers){
+                aClasslist.newStudent(person);
+            }
+            aClasslist.newStudent(leader);
+            aClasslist.getStudent(leader.getName()).setStatusOn();
+            aClasslist.getStudent(leader.getName()).getState().setTypeInstructor();
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.bind("ClassList", aClasslist);
-            System.out.println("Welcome " + leader.username);
+            System.out.println("Welcome Instructor " + leader.username);
             // links a string to aClassList instance for clients
-            Naming.rebind("ClassList", aClasslist);
             System.out.println("ClassList server ready");
-            while (!request.equals("exit")) {
+            while (!request.equalsIgnoreCase("exit")){
                 System.out.println("Free Response (FR), Multiple Choice (MC), get answers (GA), logout, or exit?");
                 request = scanner.nextLine();
-                if (request.equals("FR")) {
+                if (request.equalsIgnoreCase("FR")){
                     question = aClasslist.getInstructor().makeFreeResponse();
-                    for (StudentServant s : aClasslist.allStudents()) {
-                        s.setQuestion(question);
-                    }
-                } else if (request.equals("MC")) {
+                    for (StudentServant s : aClasslist.allStudents()){
+						s.setQuestion(question);
+					}
+                } else if (request.equalsIgnoreCase("MC")){
                     question = aClasslist.getInstructor().makeMultipleChoice();
-                    for (StudentServant s : aClasslist.allStudents()) {
-                        s.setQuestion(question);
-                    }
-                } else if (request.equals("GA")) {
-                    for (StudentServant s : aClasslist.allStudents()) {
-                        System.out.println(s.getName() + " has typed " + s.getAnswer());
-                    }
-                } else if (request.equals("logout")) {
-                    System.out.println("Thank you " + leader.username);
-                    System.out.println("Please assign another teacher.  What's the instructor's name?");
-                    username = scanner.nextLine();
-                    System.out.println("What's the instructor's password?");
-                    password = scanner.nextLine();
-                    aClasslist.setInstructor(new User("Instructor", username, password));
-                } else if (request.equals("exit")) {
-                    System.out.println("Thank you " + leader.username);
-                    scanner.close();
+                    for (StudentServant s : aClasslist.allStudents()){
+						s.setQuestion(question);
+					}
+                } else if (request.equalsIgnoreCase("GA")){
+                    for (StudentServant s : aClasslist.allStudents()){
+                        if (!s.getAnswer().equals("") && !s.getAnswer().equals("logout") && !s.getAnswer().equals("read")){
+                            System.out.println("(" + s.getStatus() + ") " + s.getName() + " has typed " + s.getAnswer());
+                        }
+					}
+                } else if (request.equalsIgnoreCase("logout")){
+                    System.out.println("Thank you " + aClasslist.getInstructor().getState().username);
+                    aClasslist.getInstructor().getState().setStatusOff();
+                    aClasslist.getInstructor().getState().setTypeStudent();
+                    // gets the instructor in the StudentServant list and turns him/her to an offline student
+                    aClasslist.getStudent(aClasslist.getInstructor().getState().username).setStatusOff();
+                    aClasslist.getStudent(aClasslist.getInstructor().getState().username).getState().setTypeStudent();
+                    System.out.println("Please assign another teacher.  Register or Login?");
+                    request = scanner.nextLine();
+                    if (request.equalsIgnoreCase("register")){
+                        System.out.println("What's the instructor's name?");
+                        username = scanner.nextLine();
+                        System.out.println("What's the instructor's password?");
+                        password = scanner.nextLine();
+                        aClasslist.setInstructor(new User("Instructor", username, password, "online"));
+                        aClasslist.newStudent(new User("Instructor", username, password, "online"));
+                        Naming.rebind("ClassList", aClasslist); 
+                    } else if (request.equalsIgnoreCase("login")){
+                        System.out.println("Enter username: ");
+                        username = scanner.nextLine();
+                        System.out.println("Enter password: ");
+                        password = scanner.nextLine();
+                        leader = aClasslist.getStudent(username).getState();
+                        if (aClasslist.getStudent(username).getPass().equals(password)){
+                            leader.setTypeInstructor();
+                            aClasslist.setInstructor(leader);
+                            aClasslist.getStudent(username).setStatusOn();
+                        }
+                    } 
                 }
             }
-
-        } catch (Exception e) {
+            System.out.println("Thank you " + leader.username);
+            for (Student s : aClasslist.allStudents()){
+                registerUserToFile(fileName, s.getName(), s.getPass(), "Student");
+            };
+            scanner.close();
+            
+        }catch(Exception e) {
             System.out.println("ClassList server main " + e.getMessage());
         }
     }
-
     public static void createRegisteredUsersFile(String fileName) {
         try {
             File registeredUsersFile = new File(fileName);
@@ -91,12 +118,13 @@ public class ClassListServer {
     public static void registerUserToFile(String fileName, String userName, String password, String type) throws IOException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
             StringBuilder sb = new StringBuilder();
+            sb.append(type);
+            sb.append(",");
             sb.append(userName);
             sb.append(",");
             sb.append(password);
-            sb.append(",");
-            sb.append(type);
-            sb.append('\n');
+            sb.append("\n");
+
 
             writer.write(sb.toString());
 
@@ -106,14 +134,15 @@ public class ClassListServer {
             System.out.println(e.getMessage());
         }
     }
+    public static ArrayList<User> readRegisterUsersFile() {
 
-    public static void readRegisterUsersFile() {
-
-        ArrayList<User> registeredUsers = new ArrayList<>();
+        ArrayList<User> registeredUsers = new ArrayList<User>();
         // file name
         String FILE_NAME = "registeredusers.csv";
+
         BufferedReader br = null;
         FileReader fr = null;
+
         try {
             fr = new FileReader(FILE_NAME);
             br = new BufferedReader(fr);
@@ -129,6 +158,7 @@ public class ClassListServer {
             for (User user : registeredUsers) {
                 System.out.println(user.toString());
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -142,113 +172,6 @@ public class ClassListServer {
             }
 
         }
-    }
-    public static void createInstructorGUI(){
-        //Creating the Frame
-        JFrame frame = new JFrame("Instructor GUI");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 800);
-        //creating a main panel of grid layout
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(5, 1));
-        //adding panels to the main panel
-        mainPanel.add(loginPanel());
-        mainPanel.add(questionPanel());
-        mainPanel.add(multiChoicePanel());
-        mainPanel.add(openChoicePanel());
-        mainPanel.add(buttonPanel());
-        //add the main panel to the frame
-        frame.getContentPane().add(mainPanel);
-        frame.setVisible(true);
-    }
-    public static JPanel loginPanel() {
-
-        JPanel loginPanel = new JPanel();
-        //username field and label
-        JLabel userNameTFieldLabel = new JLabel("User name");
-        JTextField userNameTField = new JTextField("", 10);
-        loginPanel.add(userNameTFieldLabel);
-        loginPanel.add(userNameTField);
-        //password field and label
-        JLabel passwordTFieldLabel = new JLabel("Password");
-        JTextField passwordTField = new JTextField("", 10);
-        loginPanel.add(passwordTFieldLabel);
-        loginPanel.add(passwordTField );
-        //type field and label
-        JLabel typeTFieldLabel = new JLabel("Type");
-        JTextField typeTField = new JTextField("", 10);
-        loginPanel.add(typeTFieldLabel);
-        loginPanel.add(typeTField );
-        // Buttons
-        JButton loginBtn = new JButton("Login");
-        JButton registerBtn = new JButton("Register");
-        loginPanel.add(loginBtn);
-        loginPanel.add(registerBtn);
-
-        return loginPanel;
-    }
-    public static JPanel multiChoicePanel(){
-
-        JPanel multiChoicePanel = new JPanel();
-        //create radio button group so only 1 button can be selected at a time
-        ButtonGroup group = new ButtonGroup();
-        //create radio button and their label A through B
-        JRadioButton radioAbtn = new JRadioButton();
-        radioAbtn.setText("A");
-        JRadioButton radioBbtn = new JRadioButton();
-        radioBbtn.setText("B");
-        JRadioButton radioCbtn = new JRadioButton();
-        radioCbtn.setText("C");
-        JRadioButton radioDbtn = new JRadioButton();
-        radioDbtn.setText("D");
-        //add radio buttons to group
-        group.add(radioAbtn);
-        group.add(radioBbtn);
-        group.add(radioCbtn);
-        group.add(radioDbtn);
-        //add radio button to panel
-        multiChoicePanel.add(radioAbtn);
-        multiChoicePanel.add(radioBbtn);
-        multiChoicePanel.add(radioCbtn);
-        multiChoicePanel.add(radioDbtn);
-        //Submit button
-        JButton multiChoiceSubmitBtn = new JButton("Submit");
-        multiChoicePanel.add(multiChoiceSubmitBtn);
-
-        return multiChoicePanel;
-    }
-    public static JPanel openChoicePanel(){
-
-        JPanel openChoicePanel = new JPanel();
-        //creates label text field and submit button
-        JLabel openChoiceTFieldLabel = new JLabel("Open Ended Answer");
-        JTextField openChoiceTField = new JTextField("", 25);
-        JButton submitOpenChoiceBtn = new JButton("Submit");
-        // adds label text field and submit button to the panel
-        openChoicePanel.add(openChoiceTFieldLabel);
-        openChoicePanel.add(openChoiceTField);
-        openChoicePanel.add(submitOpenChoiceBtn);
-
-        return openChoicePanel;
-    }
-    public static JPanel questionPanel(){
-
-        JPanel questionPanel = new JPanel();
-        //creates and adds label to panel
-        JLabel questionLabel = new JLabel("Questions will display here");
-        questionPanel.add(questionLabel);
-        return questionPanel;
-    }
-    public static JPanel buttonPanel(){
-
-        JPanel buttonPanel = new JPanel();
-        //creates and adds Refresh and Logout buttons to panel
-        JButton refreshBtn = new JButton("Refresh");
-        JButton logoutBtn = new JButton("Logout");
-        buttonPanel.add(refreshBtn);
-        buttonPanel.add(logoutBtn);
-
-        return buttonPanel;
+        return registeredUsers;
     }
 }
-
