@@ -35,6 +35,7 @@ public class ClassListServer {
             }
             aClasslist.newStudent(leader);
             aClasslist.getStudent(leader.getName()).setStatusOn();
+            aClasslist.getStudent(leader.getName()).getState().setTypeInstructor();
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.bind("ClassList", aClasslist);
             System.out.println("Welcome Instructor " + leader.username);
