@@ -34,6 +34,7 @@ public class ClassListServer {
                 aClasslist.newStudent(person);
             }
             aClasslist.newStudent(leader);
+            aClasslist.getStudent(leader.getName()).setStatusOn();
             Registry registry = LocateRegistry.createRegistry(1099);
             registry.bind("ClassList", aClasslist);
             System.out.println("Welcome Instructor " + leader.username);
@@ -116,12 +117,13 @@ public class ClassListServer {
     public static void registerUserToFile(String fileName, String userName, String password, String type) throws IOException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
             StringBuilder sb = new StringBuilder();
+            sb.append(type);
+            sb.append(",");
             sb.append(userName);
             sb.append(",");
             sb.append(password);
-            sb.append(",");
-            sb.append(type);
-            sb.append('\n');
+            sb.append("\n");
+
 
             writer.write(sb.toString());
 
