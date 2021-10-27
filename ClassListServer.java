@@ -9,6 +9,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 //import java.rmi.server.UnicastRemoteObject;
 public class ClassListServer {
@@ -90,10 +91,22 @@ public class ClassListServer {
                     for (StudentServant s : aClasslist.allStudents()) {
                         s.setQuestion(question);
                     }
+                    TimeUnit.SECONDS.sleep(10);
+                    for (StudentServant s : aClasslist.allStudents()) {
+                        if (!s.getAnswer().equals("") && !s.getAnswer().equals("logout") && !s.getAnswer().equals("read")) {
+                            System.out.println("(" + s.getStatus() + ") " + s.getName() + " has typed " + s.getAnswer());
+                        }
+                    }
                 } else if (request.equalsIgnoreCase("MC")) {
                     question = aClasslist.getInstructor().makeMultipleChoice();
                     for (StudentServant s : aClasslist.allStudents()) {
                         s.setQuestion(question);
+                    }
+                    TimeUnit.SECONDS.sleep(10);
+                    for (StudentServant s : aClasslist.allStudents()) {
+                        if (!s.getAnswer().equals("") && !s.getAnswer().equals("logout") && !s.getAnswer().equals("read")) {
+                            System.out.println("(" + s.getStatus() + ") " + s.getName() + " has typed " + s.getAnswer());
+                        }
                     }
                 } else if (request.equalsIgnoreCase("GA")) {
                     for (StudentServant s : aClasslist.allStudents()) {

@@ -31,22 +31,14 @@ public class ClassListClient{
 			while (!menu1.equalsIgnoreCase("exit")){
 				System.out.println("Login or Register?: (or exit)");
 				menu1 = scanner.nextLine();
-				if(menu1.equalsIgnoreCase("Read")){
-					// updates data from registry
-					registry = LocateRegistry.getRegistry("localhost", 1099);
-					aClassList  = (ClassList)registry.lookup("ClassList");
-					sList = aClassList.allStudents();
-					for (Student s : sList){
-						User u = s.getState();
-						u.print();
-					}
-				} else if (menu1.equalsIgnoreCase("Register")) {
+				if (menu1.equalsIgnoreCase("Register")) {
 					System.out.println("Enter username: ");
 					String username = scanner.nextLine();
 					System.out.println("Enter password: ");
 					String password = scanner.nextLine();
 					User u = new User("Student", username, password, "offline");
 					aClassList.newStudent(u);
+					System.out.println("Please log in");
 				} else if (menu1.equalsIgnoreCase("Login")) {
 					System.out.println("Enter username: ");
 					String username = scanner.nextLine();
@@ -55,7 +47,14 @@ public class ClassListClient{
 					Student you = aClassList.getStudent(username);
 					if (you.getPass().equals(password)){
 						you.setStatusOn();
-						System.out.println("Wait for questions and type answer [<your answer>, \"read\", \"logout\"]");
+						registry = LocateRegistry.getRegistry("localhost", 1099);
+						aClassList  = (ClassList)registry.lookup("ClassList");
+						for (Student s : sList){
+							User u = s.getState();
+							u.print();
+						}
+						System.out.println("Type read to read the question and type answer [<your answer>, \"read\", \"logout\"]");
+						System.out.println(you.getQuestion());
 						answer = scanner.nextLine();
 						while (!answer.equalsIgnoreCase("logout")){
 							if (answer.equalsIgnoreCase("read")){
@@ -74,7 +73,9 @@ public class ClassListClient{
 							} else {
 								you.sendAnswer(answer);
 								System.out.println("Answer submitted");
-								System.out.println("Wait for questions and type answer [<your answer>, \"read\", \"logout\"]");
+								System.out.println("Wait for question and type answer [<your answer>, \"read\", \"logout\"]");
+								TimeUnit.SECONDS.sleep(10);
+								System.out.println(you.getQuestion());
 								answer = scanner.nextLine();
 							}
 						}
@@ -196,10 +197,6 @@ public class ClassListClient{
 		buttonPanel.add(logoutBtn);
 
 		return buttonPanel;
-	}
-
-	public static void questionTimeLimit(int timeToWait) throws InterruptedException {
-		TimeUnit.SECONDS.sleep(timeToWait);
 	}
 }
 
