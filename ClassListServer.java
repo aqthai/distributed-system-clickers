@@ -469,10 +469,9 @@ public class ClassListServer {
             } catch (Exception ex) {
                 System.out.println("ClassList server main " + ex.getMessage());
             }
-
-        }
         }
     }
+    
 
     static class QuestionButtonActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
