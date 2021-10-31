@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.rmi.*;
+import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
@@ -33,32 +33,24 @@ public class ClassListServer {
     private static DefaultComboBoxModel<String> usersList;
 
 
-    private static final String fileName = "registeredusers.csv";
     private static ArrayList<User> registeredUsers;
 
+    private static final String FILE_NAME = "registeredusers.csv";
+    private static final int TIME_TO_WAIT = 10;
 
-    public static void main(String args[]) {
-        // create security manager to give privileges to execute
-        // System.setSecurityManager(new SecurityManager());
 
+    public static void main(String[] args) {
+
+        //create swing GUI and populate list with default info
         createInstructorGUI();
-
-        //testing the answers Jlist of the gui
-        answersList.addElement("Test1");
-        answersList.addElement("Test2");
-        answersList.addElement("A");
-        //testing the users Jlist of the gui
-        usersList.addElement("Daniel is Online");
-        usersList.addElement("Alvin is Online");
-
-
-        createRegisteredUsersFile(fileName);
+        answersList.addElement("Answers will show here");
+        usersList.addElement("Users will show here");
+        //creates the registerusers.csv file if not already created
+        createRegisteredUsersFile(FILE_NAME);
 
 
         Scanner scanner = new Scanner(System.in);
-
         System.out.println("Main OK, Please sign in an instructor.");
-
         System.out.println("What is the instructor's username?");
         String username = scanner.nextLine();
         System.out.println("What is the instructor's password?");
@@ -86,6 +78,13 @@ public class ClassListServer {
             // links a string to aClassList instance for clients
             System.out.println("ClassList server ready");
             while (!request.equalsIgnoreCase("exit")) {
+
+                //adds the users to the swing GUI component
+                usersList.removeAllElements();
+                for (Student s : aClasslist.allStudents()) {
+                    User user = s.getState();
+                    usersList.addElement(user.printUserStatus());
+                }
                 System.out.println("Free Response (FR), Multiple Choice (MC), get answers (GA), logout, or exit?");
                 request = scanner.nextLine();
                 if (request.equalsIgnoreCase("FR")) {
@@ -93,8 +92,7 @@ public class ClassListServer {
                     for (StudentServant s : aClasslist.allStudents()) {
                         s.setQuestion(question);
                     }
-
-                    TimeUnit.SECONDS.sleep(10);
+                    TimeUnit.SECONDS.sleep(TIME_TO_WAIT);
                     for (StudentServant s : aClasslist.allStudents()) {
                         if (!s.getAnswer().equals("") && !s.getAnswer().equals("logout") && !s.getAnswer().equals("read")) {
                             System.out.println("(" + s.getStatus() + ") " + s.getName() + " has typed " + s.getAnswer());
@@ -105,16 +103,20 @@ public class ClassListServer {
                     for (StudentServant s : aClasslist.allStudents()) {
                         s.setQuestion(question);
                     }
-                    TimeUnit.SECONDS.sleep(10);
+                    TimeUnit.SECONDS.sleep(TIME_TO_WAIT);
                     for (StudentServant s : aClasslist.allStudents()) {
                         if (!s.getAnswer().equals("") && !s.getAnswer().equals("logout") && !s.getAnswer().equals("read")) {
-                            System.out.println("(" + s.getStatus() + ") " + s.getName() + " has typed " + s.getAnswer());
+                            System.out.println("(" + s.getStatus() + ") " + s.getName() + " has typed '" + s.getAnswer() + "'");
                         }
                     }
                 } else if (request.equalsIgnoreCase("GA")) {
+
+                    answersList.removeAllElements(); //clears current contents of the Jlist
                     for (StudentServant s : aClasslist.allStudents()) {
                         if (!s.getAnswer().equals("") && !s.getAnswer().equals("logout") && !s.getAnswer().equals("read")) {
-                            System.out.println("(" + s.getStatus() + ") " + s.getName() + " has typed " + s.getAnswer());
+                            System.out.println("(" + s.getStatus() + ") " + s.getName() + " has typed '" + s.getAnswer() + "'");
+                            //add the elements to a Jlist java swing component
+                            answersList.addElement("(" + s.getStatus() + ") " + s.getName() + " has typed '" + s.getAnswer() + "'");
                         }
                     }
                 } else if (request.equalsIgnoreCase("logout")) {
@@ -150,7 +152,7 @@ public class ClassListServer {
             }
             System.out.println("Thank you " + leader.username);
             for (Student s : aClasslist.allStudents()) {
-                registerUserToFile(fileName, s.getName(), s.getPass(), "Student");
+                registerUserToFile(FILE_NAME, s.getName(), s.getPass(), "Student");
             }
             ;
             scanner.close();
@@ -175,20 +177,23 @@ public class ClassListServer {
     }
 
     public static void registerUserToFile(String fileName, String userName, String password, String type) throws IOException {
+
+        ArrayList<User> currentListRegisteredUsers = readRegisterUsersFile();
+
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
             StringBuilder sb = new StringBuilder();
-            sb.append(type);
+            sb.append("Student");
             sb.append(",");
             sb.append(userName);
             sb.append(",");
             sb.append(password);
             sb.append("\n");
-
-
-            writer.write(sb.toString());
-
-            System.out.println("done!");
-
+            User user = new User("Student", userName, password);
+            // only adds user to file if not already
+            if (!currentListRegisteredUsers.contains(user)) {
+                writer.write(sb.toString());
+                System.out.println(userName + " Already Registered to File");
+            }
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
@@ -197,12 +202,8 @@ public class ClassListServer {
     public static ArrayList<User> readRegisterUsersFile() {
 
         ArrayList<User> registeredUsers = new ArrayList<User>();
-        // file name
-        String FILE_NAME = "registeredusers.csv";
-
         BufferedReader br = null;
         FileReader fr = null;
-
         try {
             fr = new FileReader(FILE_NAME);
             br = new BufferedReader(fr);
@@ -212,13 +213,7 @@ public class ClassListServer {
                 //userName,password,type
                 User user = new User(values[0], values[1], values[2]);
                 registeredUsers.add(user);
-
             }
-            //prints every user that's in the file
-            for (User user : registeredUsers) {
-                System.out.println(user.toString());
-            }
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -230,7 +225,6 @@ public class ClassListServer {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-
         }
         return registeredUsers;
     }
@@ -248,8 +242,9 @@ public class ClassListServer {
         mainPanel.add(questionPanel());
         mainPanel.add(multiChoicePanel());
         mainPanel.add(displayAnswersPanel());
-        mainPanel.add(buttonPanel());
         mainPanel.add(displayUsersPanel());
+        mainPanel.add(buttonPanel());
+
 
         //add the main panel to the frame
         frame.getContentPane().add(mainPanel);
@@ -424,7 +419,7 @@ public class ClassListServer {
         public void actionPerformed(ActionEvent e) {
             System.out.print(userNameTField.getText() + " ");
             System.out.println(passwordTField.getText());
-            System.out.println("logged in");
+            System.out.println("log in btn pressed");
         }
     }
 
@@ -433,6 +428,7 @@ public class ClassListServer {
 
             System.out.print(userNameTField.getText() + " ");
             System.out.println(passwordTField.getText());
+            System.out.println("register btn pressed");
         }
     }
 
@@ -442,11 +438,7 @@ public class ClassListServer {
 
             if (isMultiChoiceCheckBox.isSelected()) {
                 System.out.println("the box was selected");
-                //make sure to only use radio buttons when the check box is selected
-                System.out.println("This radio button was selected " + radioButtonGroup.getSelection().getActionCommand());
-                radioButtonGroup.clearSelection();
             }
-
             System.out.println("The question is " + questionTField.getText());
             System.out.println("is check box selected " + isMultiChoiceCheckBox.isSelected());
             radioButtonGroup.clearSelection();
@@ -462,7 +454,6 @@ public class ClassListServer {
 
     static class LogoutButtonActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
             System.out.println("logout button clicked");
         }
     }
