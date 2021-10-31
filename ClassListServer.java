@@ -38,7 +38,7 @@ public class ClassListServer {
     static {
         try {
             aClassList = new ClassListServant();
-        } catch (RemoteException e){
+        } catch (RemoteException e) {
             e.printStackTrace();
         }
     }
@@ -47,10 +47,10 @@ public class ClassListServer {
     private static ArrayList<User> registeredUsers;
 
 
-    public static void main(String args[]) throws RemoteException, AlreadyBoundException  {
+    public static void main(String args[]) throws RemoteException, AlreadyBoundException {
         // create security manager to give privileges to execute
         // System.setSecurityManager(new SecurityManager());
-        
+
         createInstructorGUI();
         ClassList aClasslist = new ClassListServant();
         Registry registry = LocateRegistry.createRegistry(1099);
@@ -203,6 +203,7 @@ public class ClassListServer {
             System.out.println(e.getMessage());
         }
     }
+
     public static ArrayList<User> readRegisterUsersFile() {
 
         ArrayList<User> registeredUsers = new ArrayList<User>();
@@ -471,8 +472,8 @@ public class ClassListServer {
             }
 
         }
-        }
     }
+
 
     static class QuestionButtonActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -528,6 +529,6 @@ public class ClassListServer {
             }
         }
     }
-
-
 }
+
+
