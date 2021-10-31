@@ -31,30 +31,17 @@ public class ClassListServer {
     // for list of answers
     private static DefaultComboBoxModel<String> answersList;
     private static DefaultComboBoxModel<String> usersList;
-    //
-    //private static JRadioButton[] buttons = new JRadioButton[]{answerARadioBtn, answerBRadioBtn, answerCRadioBtn, answerDRadioBtn};
-    private static ClassList aClassList;
 
-    static {
-        try {
-            aClassList = new ClassListServant();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
 
     private static final String fileName = "registeredusers.csv";
     private static ArrayList<User> registeredUsers;
 
 
-    public static void main(String args[]) throws RemoteException, AlreadyBoundException {
+    public static void main(String args[]) {
         // create security manager to give privileges to execute
         // System.setSecurityManager(new SecurityManager());
 
         createInstructorGUI();
-        ClassList aClasslist = new ClassListServant();
-        Registry registry = LocateRegistry.createRegistry(1099);
-        registry.bind("ClassList", aClasslist);
 
         //testing the answers Jlist of the gui
         answersList.addElement("Test1");
@@ -82,7 +69,10 @@ public class ClassListServer {
         String request = "";
         String question = "";
         try {
-            aClasslist = new ClassListServant(leader);
+
+            ClassList aClasslist = new ClassListServant(leader);
+            Registry registry = LocateRegistry.createRegistry(1099);
+            registry.bind("ClassList", aClasslist);
             // grab users from file and add them to ArrayList within aClassList
             registeredUsers = readRegisterUsersFile();
             for (User person : registeredUsers) {
@@ -91,8 +81,7 @@ public class ClassListServer {
             aClasslist.newStudent(leader);
             aClasslist.getStudent(leader.getName()).setStatusOn();
             aClasslist.getStudent(leader.getName()).getState().setTypeInstructor();
-            registry = LocateRegistry.createRegistry(1099);
-            registry.bind("ClassList", aClasslist);
+
             System.out.println("Welcome Instructor " + leader.username);
             // links a string to aClassList instance for clients
             System.out.println("ClassList server ready");
@@ -104,6 +93,7 @@ public class ClassListServer {
                     for (StudentServant s : aClasslist.allStudents()) {
                         s.setQuestion(question);
                     }
+
                     TimeUnit.SECONDS.sleep(10);
                     for (StudentServant s : aClasslist.allStudents()) {
                         if (!s.getAnswer().equals("") && !s.getAnswer().equals("logout") && !s.getAnswer().equals("read")) {
@@ -179,7 +169,7 @@ public class ClassListServer {
                 System.out.println("File already exists.");
             }
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred creating registered users file.");
             e.printStackTrace();
         }
     }
@@ -440,37 +430,9 @@ public class ClassListServer {
 
     static class RegisterButtonActionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            // System.out.print(userNameTField.getText() + " ");
-            // System.out.println(passwordTField.getText());
-            // System.out.println("Registered");
-            String username = userNameTField.getText();
-            //System.out.println("What is the instructor's password?");
-            String password = passwordTField.getText();
-            User leader = new User("Instructor", username, password, "online");
-            try {
-                ClassList aClasslist = new ClassListServant(leader);
-                // grab users from file and add them to ArrayList within aClassList
-                registeredUsers = readRegisterUsersFile();
-                for (User person : registeredUsers) {
-                    aClasslist.newStudent(person);
-                }
-                aClasslist.newStudent(leader);
-                aClasslist.getStudent(leader.getName()).setStatusOn();
-                aClasslist.getStudent(leader.getName()).getState().setTypeInstructor();
-                Registry registry = LocateRegistry.createRegistry(1099);
-                registry.bind("ClassList", aClasslist);
 
-                System.out.println("Welcome Instructor " + leader.username);
-
-                //writes all to file
-                for (Student s : aClasslist.allStudents()) {
-                    registerUserToFile(fileName, s.getName(), s.getPass(), "Student");
-                }
-
-            } catch (Exception ex) {
-                System.out.println("ClassList server main " + ex.getMessage());
-            }
-
+            System.out.print(userNameTField.getText() + " ");
+            System.out.println(passwordTField.getText());
         }
     }
 
@@ -482,6 +444,7 @@ public class ClassListServer {
                 System.out.println("the box was selected");
                 //make sure to only use radio buttons when the check box is selected
                 System.out.println("This radio button was selected " + radioButtonGroup.getSelection().getActionCommand());
+                radioButtonGroup.clearSelection();
             }
 
             System.out.println("The question is " + questionTField.getText());
