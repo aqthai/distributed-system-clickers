@@ -204,7 +204,7 @@ public class ClassListServer {
             User user = new User("Student", userName, password);
             // only adds user to file if not already
             if (!currentListRegisteredUsers.contains(user)) {
-                writer.write(sb.toString() + "\n");
+                writer.write(sb.toString());
                 System.out.println(userName + " Already Registered to File");
             }
         } catch (FileNotFoundException e) {
