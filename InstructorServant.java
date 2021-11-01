@@ -11,6 +11,10 @@ public class InstructorServant extends UnicastRemoteObject implements Instructor
     	theUser = u;
     }
     
+    public InstructorServant()throws RemoteException{
+    	theUser = new User ("Instructor", "admin", "password");
+    }
+    
 	public String makeMultipleChoice() throws RemoteException {
         String [] mcQuestion = new String[4]; 
 
