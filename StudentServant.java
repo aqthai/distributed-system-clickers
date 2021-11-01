@@ -1,4 +1,7 @@
-//package examples.RMIShape;
+/**
+ * Authors: Alvin Thai, Daniel Holguin, Jarom Montgomerry, Nicholas Knaggs
+ * Professor Silva ACO 432
+ */
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 

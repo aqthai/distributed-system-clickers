@@ -1,3 +1,10 @@
+/**
+ * ClassListServant is the skeleton ClassList calls.  It is made of an instructor
+ * and an ArrayList of StudentServant objects.
+ * Authors: Alvin Thai, Daniel Holguin, Jarom Montgomerry, Nicholas Knaggs
+ * Professor Silva ACO 432
+ */
+
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;

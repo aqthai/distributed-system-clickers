@@ -1,3 +1,15 @@
+/** 
+ * ClassListServer uses remote method invocation to store a ClassList object to a server.  
+ * Instructors wait ten seconds after posting a question to receive responses from students 
+ * and students wait ten seconds after submitting a question before the new question appears.
+ * Both have to be fast enough to get the latest  posts or will have to type 'GA' from the 
+ * instructor to get answers or 'read' from the student to read the new question.  Upon exit,
+ * users will append to a csv file.  All users that sign in here become instructors.
+ * Authors: Alvin Thai, Daniel Holguin, Jarom Montgomerry, Nicholas Knaggs
+ * Professor Silva ACO 432
+ */
+
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -70,6 +82,7 @@ public class ClassListServer {
             for (User person : registeredUsers) {
                 aClasslist.newStudent(person);
             }
+            // add leader to the ClassListServant for reading and changing status
             aClasslist.newStudent(leader);
             aClasslist.getStudent(leader.getName()).setStatusOn();
             aClasslist.getStudent(leader.getName()).getState().setTypeInstructor();
@@ -103,11 +116,7 @@ public class ClassListServer {
                     for (StudentServant s : aClasslist.allStudents()) {
                         s.setQuestion(question);
                     }
-<<<<<<< HEAD
-                    TimeUnit.SECONDS.sleep(12);
-=======
                     TimeUnit.SECONDS.sleep(TIME_TO_WAIT);
->>>>>>> b6f3d30b31f32f89f8cf8c4ea52a1c800fdf09ff
                     for (StudentServant s : aClasslist.allStudents()) {
                         if (!s.getAnswer().equals("") && !s.getAnswer().equals("logout") && !s.getAnswer().equals("read")) {
                             System.out.println("(" + s.getStatus() + ") " + s.getName() + " has typed '" + s.getAnswer() + "'");
@@ -195,7 +204,7 @@ public class ClassListServer {
             User user = new User("Student", userName, password);
             // only adds user to file if not already
             if (!currentListRegisteredUsers.contains(user)) {
-                writer.write(sb.toString());
+                writer.write(sb.toString() + "\n");
                 System.out.println(userName + " Already Registered to File");
             }
         } catch (FileNotFoundException e) {
@@ -214,20 +223,10 @@ public class ClassListServer {
             String currentLine;
             while ((currentLine = br.readLine()) != null) {
                 String[] values = currentLine.split(",");
-                //userName,password,type
+                //type,userName,password
                 User user = new User(values[0], values[1], values[2]);
                 registeredUsers.add(user);
-<<<<<<< HEAD
-
             }
-            //prints every user that's in the file
-            // for (User user : registeredUsers) {
-            //     System.out.println(user.toString());
-            // }
-
-=======
-            }
->>>>>>> b6f3d30b31f32f89f8cf8c4ea52a1c800fdf09ff
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

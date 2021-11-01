@@ -1,3 +1,9 @@
+/**
+ * User is the serializable object that Students and Instructors require.
+ * Authors: Alvin Thai, Daniel Holguin, Jarom Montgomerry, Nicholas Knaggs
+ * Professor Silva ACO 432
+ */
+
 import java.io.Serializable;
 
 public class User implements Serializable {

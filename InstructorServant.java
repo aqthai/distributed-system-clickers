@@ -1,4 +1,9 @@
-//package examples.RMIShape;
+/**
+ * InstructorServant is the skeleton of Instructor objects.  It
+ * is just a user with more methods.
+ * Authors: Alvin Thai, Daniel Holguin, Jarom Montgomerry, Nicholas Knaggs
+ * Professor Silva ACO 432
+ */
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;

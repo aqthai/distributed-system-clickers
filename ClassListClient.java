@@ -1,3 +1,11 @@
+/**	
+ * ClassListClient is where users may sign in or register to the remote ClassList object
+ * All users that log in here become students.  Students type 'read' to get the latest question
+ * and have ten seconds to respond before the question the instructor is at posts.
+ * Authors: Alvin Thai, Daniel Holguin, Jarom Montgomerry, Nicholas Knaggs
+ * Professor Silva ACO 432
+ */
+
 //package examples.RMIShape;
 
 import javax.swing.*;
