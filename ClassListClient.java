@@ -56,7 +56,9 @@ public class ClassListClient{
 						System.out.println("Type read to read the question and type answer [<your answer>, \"read\", \"logout\"]");
 						System.out.println(you.getQuestion());
 						answer = scanner.nextLine();
+						TimeUnit.SECONDS.sleep(10);
 						while (!answer.equalsIgnoreCase("logout")){
+							System.out.println(you.getQuestion());
 							if (answer.equalsIgnoreCase("read")){
 								// updates data from registry
 								registry = LocateRegistry.getRegistry("localhost", 1099);
@@ -70,12 +72,12 @@ public class ClassListClient{
 								System.out.println("Type answer: [<another answer>, \"read\", \"logout\"]");
 								answer = scanner.nextLine();
 								you.sendAnswer(answer);
+								TimeUnit.SECONDS.sleep(10);
 							} else {
 								you.sendAnswer(answer);
 								System.out.println("Answer submitted");
 								System.out.println("Wait for question and type answer [<your answer>, \"read\", \"logout\"]");
 								TimeUnit.SECONDS.sleep(10);
-								System.out.println(you.getQuestion());
 								answer = scanner.nextLine();
 							}
 						}

@@ -102,7 +102,7 @@ public class ClassListServer {
                     for (StudentServant s : aClasslist.allStudents()) {
                         s.setQuestion(question);
                     }
-                    TimeUnit.SECONDS.sleep(10);
+                    TimeUnit.SECONDS.sleep(12);
                     for (StudentServant s : aClasslist.allStudents()) {
                         if (!s.getAnswer().equals("") && !s.getAnswer().equals("logout") && !s.getAnswer().equals("read")) {
                             System.out.println("(" + s.getStatus() + ") " + s.getName() + " has typed " + s.getAnswer());
@@ -211,9 +211,9 @@ public class ClassListServer {
 
             }
             //prints every user that's in the file
-            for (User user : registeredUsers) {
-                System.out.println(user.toString());
-            }
+            // for (User user : registeredUsers) {
+            //     System.out.println(user.toString());
+            // }
 
         } catch (IOException e) {
             e.printStackTrace();
