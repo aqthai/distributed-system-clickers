@@ -3,3 +3,4 @@ A Client/Server based classroom response system is a tool that allows an instruc
 
 - [ ] Rewrite program with swing.io GUI
 - [ ] Revert main branch to version that works via console
+- [ ] Fixup excessive commits
